@@ -1,5 +1,9 @@
 # Satellite Telemetry Dashboard
 
+[![CI](https://github.com/Anthonyhu1988/satellite-telemetry-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/Anthonyhu1988/satellite-telemetry-dashboard/actions/workflows/ci.yml)
+
+Repo: https://github.com/Anthonyhu1988/satellite-telemetry-dashboard (same link for the backend and frontend tasks)
+
 A REST API and a React dashboard for viewing, filtering, adding and deleting satellite telemetry.
 Both parts of the take-home live in this one repo:
 
