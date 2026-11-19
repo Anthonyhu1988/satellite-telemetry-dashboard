@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:coverage
+
+  docker:
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build and start the stack
+        run: docker compose up -d --build --wait
+      - name: Smoke test through nginx
+        run: |
+          curl -fsS http://localhost:8080 | grep -q '<div id="root">'
+          curl -fsS http://localhost:8080/api/telemetry | grep -q '"pagination"'
+          curl -fsS http://localhost:3000/health
+      - name: Run test suites in containers
+        run: |
+          docker compose --profile test run --rm api-test
+          docker compose --profile test run --rm web-test
+      - if: always()
+        run: docker compose down
