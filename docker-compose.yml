@@ -1,0 +1,40 @@
+name: satellite-telemetry
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: runtime
+    ports:
+      - '${API_PORT:-3000}:3000'
+    environment:
+      SEED: 'true'
+
+  web:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: runtime
+      args:
+        VITE_USE_MOCK: '${VITE_USE_MOCK:-false}'
+    ports:
+      - '${WEB_PORT:-8080}:8080'
+    depends_on:
+      api:
+        condition: service_healthy
+
+  # test runners, only started with --profile test
+  api-test:
+    profiles: [test]
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+      target: test
+
+  web-test:
+    profiles: [test]
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+      target: test
