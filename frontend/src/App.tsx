@@ -11,6 +11,7 @@ import { TelemetryForm } from './components/TelemetryForm';
 import { TelemetryTable } from './components/TelemetryTable';
 import { Toast, type ToastMessage } from './components/Toast';
 import { useTelemetry } from './hooks/useTelemetry';
+import rocketLabLogo from './assets/rocket-lab-logo.svg';
 
 export default function App({ api = telemetryApi }: { api?: TelemetryApi }) {
   const { state, setFilters, toggleSort, setPage, reload, createEntry, removeEntry } =
@@ -49,19 +50,8 @@ export default function App({ api = telemetryApi }: { api?: TelemetryApi }) {
     <>
       <header className="topbar">
         <a className="brand" href="#overview">
-          <svg className="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
-            <ellipse
-              cx="16"
-              cy="16"
-              rx="13"
-              ry="5.5"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              transform="rotate(-25 16 16)"
-            />
-            <circle cx="16" cy="16" r="3.2" className="brand__core" />
-          </svg>
+          <img className="brand__logo" src={rocketLabLogo} alt="Rocket Lab" />
+          <span className="brand__divider" aria-hidden="true" />
           <span className="brand__text">
             Ground<span className="brand__light">Station</span>
           </span>

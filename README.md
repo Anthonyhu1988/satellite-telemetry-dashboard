@@ -175,6 +175,10 @@ async for that reason, even though better-sqlite3 is synchronous.
 - Styling is plain CSS in `styles.css`, themed after Rocket Lab's own site: black background, a wide
   display face (Michroma) for headings, letter-spaced uppercase labels, red as the single accent, and
   digit-tile counters. Status still uses colour plus shape plus text so it reads without colour.
+- The Rocket Lab name and logo are trademarks of Rocket Lab. They're used here only because this is a
+  take-home for Rocket Lab; this isn't an official Rocket Lab product. The logo SVG comes from
+  [Wikimedia Commons](https://commons.wikimedia.org/wiki/File:Rocket_Lab_logo.svg), recoloured for a
+  dark background.
 
 Filtering, sorting and paging all happen on the server, so they stay correct once there are more
 rows than fit on one page.

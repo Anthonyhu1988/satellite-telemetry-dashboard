@@ -7,7 +7,7 @@
   --text: #f4f4f5;
   --muted: #9b9ba3;
   --faint: #5f5f67;
-  --red: #e0262b;
+  --red: #e42727;
   --red-hover: #ff3a3f;
   --healthy: #3ccf8e;
   --warning: #f2b33d;
@@ -100,14 +100,17 @@ a {
   justify-self: start;
 }
 
-.brand__mark {
-  width: 30px;
-  height: 30px;
-  color: var(--text);
+.brand__logo {
+  display: block;
+  height: 40px;
+  width: auto;
 }
 
-.brand__core {
-  fill: var(--red);
+.brand__divider {
+  width: 1px;
+  height: 28px;
+  margin: 0 6px;
+  background: var(--line-strong);
 }
 
 .brand__text {
@@ -194,7 +197,7 @@ a {
 
 .link-status--down::before {
   background: var(--red);
-  box-shadow: 0 0 0 3px rgba(224, 38, 43, 0.22);
+  box-shadow: 0 0 0 3px rgba(228, 39, 39, 0.22);
 }
 
 /* hero */
@@ -749,7 +752,7 @@ a {
   border-radius: var(--radius);
   border: 1px solid var(--red);
   border-left-width: 3px;
-  background: rgba(224, 38, 43, 0.08);
+  background: rgba(228, 39, 39, 0.08);
   color: #ffd5d6;
 }
 
@@ -894,9 +897,12 @@ a {
     padding: 0 16px;
     gap: 12px;
   }
+  .brand__logo {
+    height: 32px;
+  }
+  .brand__divider,
   .brand__text {
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
+    display: none;
   }
   .topbar .spinner__label {
     display: none;
