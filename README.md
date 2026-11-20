@@ -172,6 +172,9 @@ async for that reason, even though better-sqlite3 is synchronous.
 - `hooks/telemetryReducer.ts` + `useTelemetry.ts`: all list state (items, filters, sort, page, loading,
   error) lives in one `useReducer`, and an effect refetches whenever the query changes
 - `components/`: table, filters, form, pagination, confirm dialog, toast, spinner, error banner and summary cards
+- Styling is plain CSS in `styles.css`, themed after Rocket Lab's own site: black background, a wide
+  display face (Michroma) for headings, letter-spaced uppercase labels, red as the single accent, and
+  digit-tile counters. Status still uses colour plus shape plus text so it reads without colour.
 
 Filtering, sorting and paging all happen on the server, so they stay correct once there are more
 rows than fit on one page.

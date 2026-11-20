@@ -43,61 +43,100 @@ export default function App({ api = telemetryApi }: { api?: TelemetryApi }) {
   // keep showing stale rows if a refresh fails, but don't show "no results" when we never got any
   const showTable = !firstLoad && !(state.error && state.items.length === 0);
 
+  const online = !state.error;
+
   return (
-    <div className="app">
-      <header className="app__header">
-        <div>
-          <h1>Satellite Telemetry</h1>
-          <p className="app__subtitle">Ground station dashboard</p>
+    <>
+      <header className="topbar">
+        <a className="brand" href="#overview">
+          <svg className="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+            <ellipse
+              cx="16"
+              cy="16"
+              rx="13"
+              ry="5.5"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.6"
+              transform="rotate(-25 16 16)"
+            />
+            <circle cx="16" cy="16" r="3.2" className="brand__core" />
+          </svg>
+          <span className="brand__text">
+            Ground<span className="brand__light">Station</span>
+          </span>
+        </a>
+        <nav className="topnav" aria-label="Sections">
+          <a href="#overview">Overview</a>
+          <a href="#log">Telemetry log</a>
+          <a href="#add-telemetry">Add entry</a>
+        </nav>
+        <div className="topbar__status">
+          {state.loading && !firstLoad && <Spinner label="Refreshing" />}
+          <span className={`link-status link-status--${online ? 'up' : 'down'}`}>
+            {online ? 'API online' : 'API offline'}
+          </span>
         </div>
-        {state.loading && !firstLoad && <Spinner label="Refreshing" />}
       </header>
 
-      <SummaryCards summary={state.summary} />
+      <section className="hero" id="overview">
+        <svg className="hero__orbits" viewBox="0 0 1000 1000" aria-hidden="true">
+          <circle cx="500" cy="500" r="220" />
+          <circle cx="500" cy="500" r="340" />
+          <circle cx="500" cy="500" r="470" />
+        </svg>
+        <p className="eyebrow">Ground segment · Live telemetry</p>
+        <h1 className="hero__title">Satellite Telemetry</h1>
+        <p className="hero__tagline">Monitor · Filter · Manage</p>
+        <SummaryCards summary={state.summary} />
+      </section>
 
-      <div className="layout">
-        <main className="panel">
-          <FilterBar value={state.filters} satellites={satellites} onChange={setFilters} />
+      <div className="app">
+        <div className="layout">
+          <main className="panel" id="log">
+            <h2 className="panel__title">Telemetry log</h2>
+            <FilterBar value={state.filters} satellites={satellites} onChange={setFilters} />
 
-          {state.error && <ErrorBanner message={state.error} onRetry={reload} />}
+            {state.error && <ErrorBanner message={state.error} onRetry={reload} />}
 
-          {firstLoad && <Spinner />}
+            {firstLoad && <Spinner />}
 
-          {showTable && (
-            <>
-              <TelemetryTable
-                items={state.items}
-                sort={state.sort}
-                onSort={toggleSort}
-                onDelete={setPendingDelete}
-              />
-              {state.pagination && (
-                <Pagination pagination={state.pagination} onPageChange={setPage} />
-              )}
-            </>
-          )}
-        </main>
+            {showTable && (
+              <>
+                <TelemetryTable
+                  items={state.items}
+                  sort={state.sort}
+                  onSort={toggleSort}
+                  onDelete={setPendingDelete}
+                />
+                {state.pagination && (
+                  <Pagination pagination={state.pagination} onPageChange={setPage} />
+                )}
+              </>
+            )}
+          </main>
 
-        <aside className="panel panel--form">
-          <TelemetryForm
-            satellites={satellites}
-            onSubmit={createEntry}
-            onSuccess={(input) => notify(`Added reading for ${input.satelliteId}`)}
+          <aside className="panel panel--form" id="add-telemetry">
+            <TelemetryForm
+              satellites={satellites}
+              onSubmit={createEntry}
+              onSuccess={(input) => notify(`Added reading for ${input.satelliteId}`)}
+            />
+          </aside>
+        </div>
+
+        {pendingDelete && (
+          <ConfirmDialog
+            title="Delete this reading?"
+            message={`${pendingDelete.satelliteId} at ${new Date(pendingDelete.timestamp).toLocaleString()} will be removed. This can't be undone.`}
+            busy={deleting}
+            onConfirm={confirmDelete}
+            onCancel={cancelDelete}
           />
-        </aside>
+        )}
+
+        <Toast toast={toast} onDismiss={dismissToast} />
       </div>
-
-      {pendingDelete && (
-        <ConfirmDialog
-          title="Delete this reading?"
-          message={`${pendingDelete.satelliteId} at ${new Date(pendingDelete.timestamp).toLocaleString()} will be removed. This can't be undone.`}
-          busy={deleting}
-          onConfirm={confirmDelete}
-          onCancel={cancelDelete}
-        />
-      )}
-
-      <Toast toast={toast} onDismiss={dismissToast} />
-    </div>
+    </>
   );
 }

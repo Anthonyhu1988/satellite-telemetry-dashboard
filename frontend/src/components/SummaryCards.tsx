@@ -14,7 +14,23 @@ export function SummaryCards({ summary }: { summary: TelemetrySummary | null }) 
       {cards.map((card) => (
         <div key={card.label} className={`summary__card summary__card--${card.tone}`}>
           <span className="summary__label">{card.label}</span>
-          <span className="summary__value">{card.value ?? '–'}</span>
+          {card.value === undefined ? (
+            <span className="summary__value">–</span>
+          ) : (
+            <span className="summary__value">
+              <span className="sr-only">{card.value}</span>
+              {/* one tile per digit; screen readers get the plain number above */}
+              <span className="summary__tiles" aria-hidden="true">
+                {String(card.value)
+                  .split('')
+                  .map((digit, i) => (
+                    <span key={i} className="summary__tile">
+                      {digit}
+                    </span>
+                  ))}
+              </span>
+            </span>
+          )}
         </div>
       ))}
     </section>
