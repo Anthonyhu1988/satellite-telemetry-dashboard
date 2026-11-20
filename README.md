@@ -185,6 +185,12 @@ rows than fit on one page.
 
 ## Decisions and assumptions
 
+- **TypeScript on both sides.** React is in the brief, so TypeScript was already the natural fit for the
+  frontend. Using it for the API as well means one language across the repo and one set of tools (Vitest,
+  ESLint, Prettier). It also means the telemetry types and zod validation rules live once in
+  `packages/shared` and are imported by both halves, so a field rename breaks the build instead of failing
+  at runtime. Express + better-sqlite3 kept the API small; Python/FastAPI would have worked too, but would
+  have meant keeping the validation rules in two languages.
 - **Storage.** The brief asks for an in-memory database. I went with SQLite in `:memory:` mode over a
   plain array so filtering, sorting and pagination are real SQL instead of hand-written loops. It's
   still in-process and resets on restart, so there's no separate DB container.
