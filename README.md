@@ -49,7 +49,7 @@ Needs Node 22+ (I used 24 LTS).
 
 ```bash
 npm install
-npm run dev
+npm start        # same as npm run dev
 ```
 
 That starts the API on `:3000` and the Vite dev server on http://localhost:5173. Vite proxies `/api/*`
