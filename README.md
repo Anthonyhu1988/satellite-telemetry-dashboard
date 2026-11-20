@@ -89,7 +89,17 @@ docker compose --profile test run --rm api-test
 docker compose --profile test run --rm web-test
 ```
 
-Current numbers: 175 tests. Backend is at 100% line coverage, frontend at 100% lines / ~97% branches.
+Current numbers:
+
+| Package  | Tests   | Lines | Branches | Functions |
+| -------- | ------- | ----- | -------- | --------- |
+| shared   | 15      | 100%  | 100%     | 100%      |
+| backend  | 76      | 100%  | 96%      | 100%      |
+| frontend | 84      | 100%  | 97.6%    | 100%      |
+| Total    | **175** |       |          |           |
+
+Run `npm run test:coverage` to reproduce it. CI fails if backend or frontend coverage drops below
+the thresholds set in their Vitest configs.
 CI (`.github/workflows/ci.yml`) runs lint, typecheck and tests on every push, then builds the Docker
 stack and smoke-tests it through nginx.
 
