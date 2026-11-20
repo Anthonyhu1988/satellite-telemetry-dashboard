@@ -85,10 +85,14 @@ export default function App({ api = telemetryApi }: { api?: TelemetryApi }) {
           <circle cx="500" cy="500" r="340" />
           <circle cx="500" cy="500" r="470" />
         </svg>
-        <p className="eyebrow">Ground segment · Live telemetry</p>
-        <h1 className="hero__title">Satellite Telemetry</h1>
-        <p className="hero__tagline">Monitor · Filter · Manage</p>
-        <SummaryCards summary={state.summary} />
+        <div className="hero__inner">
+          <div className="hero__heading">
+            <p className="eyebrow">Ground segment · Live telemetry</p>
+            <h1 className="hero__title">Satellite Telemetry</h1>
+            <p className="hero__tagline">Monitor · Filter · Manage</p>
+          </div>
+          <SummaryCards summary={state.summary} />
+        </div>
       </section>
 
       <div className="app">

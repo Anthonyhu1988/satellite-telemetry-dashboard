@@ -201,19 +201,29 @@ a {
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 88px 24px 72px;
-  text-align: center;
-  background: radial-gradient(ellipse at 50% 20%, #1b1b1e 0%, #070708 55%, #000 100%);
+  padding: 44px 40px;
+  background: radial-gradient(ellipse at 72% 50%, #1b1b1e 0%, #070708 50%, #000 100%);
   border-bottom: 1px solid var(--red);
+}
+
+/* wide screens: title left, counters right, so the table stays above the fold */
+.hero__inner {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 32px 48px;
 }
 
 .hero__orbits {
   position: absolute;
-  left: 50%;
+  left: 72%;
   top: 50%;
-  width: 1300px;
-  height: 1300px;
-  transform: translate(-50%, -38%);
+  width: 900px;
+  height: 900px;
+  transform: translate(-50%, -50%);
   pointer-events: none;
 }
 
@@ -224,13 +234,9 @@ a {
   stroke-dasharray: 4 6;
 }
 
-.hero > :not(.hero__orbits) {
-  position: relative;
-}
-
 .eyebrow {
-  margin: 0 0 22px;
-  font-size: 0.74rem;
+  margin: 0 0 12px;
+  font-size: 0.66rem;
   color: var(--muted);
 }
 
@@ -238,17 +244,18 @@ a {
   margin: 0;
   font-family: var(--display);
   font-weight: 400;
-  font-size: clamp(1.7rem, 5vw, 3.6rem);
-  line-height: 1.15;
+  font-size: clamp(1.25rem, 2.4vw, 1.9rem);
+  line-height: 1.2;
   letter-spacing: 0.08em;
   text-transform: uppercase;
+  white-space: nowrap;
 }
 
 .hero__tagline {
-  margin: 22px 0 56px;
-  font-size: 0.85rem;
+  margin: 12px 0 0;
+  font-size: 0.7rem;
   font-weight: 300;
-  letter-spacing: 0.55em;
+  letter-spacing: 0.45em;
   text-transform: uppercase;
   color: var(--text);
 }
@@ -258,40 +265,40 @@ a {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 28px 64px;
+  gap: 20px 36px;
 }
 
 .summary__card {
   display: flex;
   flex-direction: column-reverse;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
 }
 
 .summary__value {
   display: flex;
-  min-height: 52px;
+  min-height: 44px;
   align-items: center;
   font-family: var(--mono);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   color: var(--muted);
 }
 
 .summary__tiles {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .summary__tile {
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 52px;
+  width: 34px;
+  height: 44px;
   border: 1px solid rgba(255, 255, 255, 0.75);
   border-radius: var(--radius);
   background: rgba(0, 0, 0, 0.55);
   font-family: var(--mono);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   font-weight: 500;
   font-feature-settings: 'zero' 1;
   color: var(--text);
@@ -301,7 +308,7 @@ a {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   color: var(--muted);
 }
 
@@ -398,7 +405,8 @@ a {
   border: 1px solid var(--line-strong);
   color: var(--text);
   border-radius: var(--radius);
-  padding: 11px 13px;
+  height: 44px;
+  padding: 0 13px;
   width: 100%;
   transition: border-color 0.15s;
 }
@@ -535,6 +543,8 @@ a {
 
 /* table */
 .table-wrap {
+  /* positioned so the sr-only header cell can't escape the scroll box and widen the page */
+  position: relative;
   overflow-x: auto;
 }
 
@@ -815,7 +825,55 @@ a {
   }
 }
 
-/* tablet: form drops below the table, section links go */
+/* below ~1200px the table needs the full width: form drops underneath and
+   spreads its fields across, header stacks and centres */
+@media (max-width: 1200px) {
+  .layout {
+    /* minmax(0, …) lets a wide table scroll inside its panel instead of widening the page */
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .panel--form {
+    position: static;
+  }
+  .form__row {
+    display: contents;
+  }
+  .field__label {
+    white-space: nowrap;
+  }
+  .form > .field:has(input[type='datetime-local']) {
+    grid-column: span 2;
+  }
+  .form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    align-items: end;
+    gap: 18px 16px;
+  }
+  .form > .panel__title,
+  .form > .form__error,
+  .form > .btn {
+    grid-column: 1 / -1;
+  }
+  .form .btn--primary {
+    justify-self: end;
+    min-width: 240px;
+  }
+  .hero {
+    padding: 36px 24px;
+    background: radial-gradient(ellipse at 50% 30%, #1b1b1e 0%, #070708 55%, #000 100%);
+  }
+  .hero__inner {
+    flex-direction: column;
+    text-align: center;
+    gap: 28px;
+  }
+  .hero__orbits {
+    left: 50%;
+  }
+}
+
+/* tablet: section links go */
 @media (max-width: 960px) {
   .topbar {
     grid-template-columns: 1fr auto;
@@ -826,15 +884,6 @@ a {
   }
   .app {
     padding: 32px 24px 56px;
-  }
-  .layout {
-    grid-template-columns: 1fr;
-  }
-  .panel--form {
-    position: static;
-  }
-  .summary {
-    gap: 28px 40px;
   }
 }
 
@@ -857,26 +906,41 @@ a {
     font-size: 0.6rem;
   }
   .hero {
-    padding: 56px 16px 48px;
+    padding: 28px 16px;
+  }
+  .hero__inner {
+    gap: 22px;
+  }
+  .hero__title {
+    font-size: 1.1rem;
   }
   .hero__tagline {
-    margin-bottom: 40px;
-    letter-spacing: 0.35em;
-    font-size: 0.72rem;
-  }
-  .eyebrow {
+    letter-spacing: 0.3em;
     font-size: 0.62rem;
   }
+  .eyebrow {
+    font-size: 0.6rem;
+  }
+  /* narrow enough that the five counters sit 3 + 2 instead of 4 + 1 */
   .summary {
-    gap: 24px 28px;
+    max-width: 330px;
+    margin: 0 auto;
+    gap: 16px 28px;
+  }
+  .form .btn--primary {
+    justify-self: stretch;
   }
   .summary__tile {
-    width: 32px;
-    height: 42px;
-    font-size: 1.2rem;
+    width: 28px;
+    height: 36px;
+    font-size: 1.05rem;
   }
   .summary__value {
-    min-height: 42px;
+    min-height: 36px;
+  }
+  .summary__label {
+    font-size: 0.56rem;
+    letter-spacing: 0.16em;
   }
   .app {
     padding: 24px 16px 48px;
